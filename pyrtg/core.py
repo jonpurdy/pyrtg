@@ -19,8 +19,14 @@ class Sensor(object):
         for channel in self.channels:
             xml += channel.get_xml()
         xml += "</prtg>"
-
         return xml
+
+    def generate_json(self):
+        json_string = '{"prtg": {"result": ['
+        for channel in self.channels:
+            json_string += channel.get_json()
+        json_string += "]}}"
+        return json_string
 
 class Channel(object):
     """ PRTG channel. These get added to Sensor objects.
@@ -50,3 +56,8 @@ class Channel(object):
                 xml += "<%s>%s</%s>" % (entry,self.extra_fields[entry],entry)
         xml += "</result>\n"
         return xml
+
+    def get_json(self):
+        json_str = '{"channel": %s, "value": %s}' % (self.name, self.value)
+        return json_str
+        
