@@ -25,6 +25,7 @@ class Sensor(object):
         json_string = '{"prtg": {"result": ['
         for channel in self.channels:
             json_string += channel.get_json()
+        json_string = json_string[:-1] # this removes the last comma after the last channel
         json_string += "]}}"
         return json_string
 
@@ -58,6 +59,6 @@ class Channel(object):
         return xml
 
     def get_json(self):
-        json_str = '{"channel": %s, "value": %s}' % (self.name, self.value)
+        json_str = '{"channel": "%s", "value": "%s"},' % (self.name, self.value)
         return json_str
         
